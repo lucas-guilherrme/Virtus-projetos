@@ -2,7 +2,6 @@
 /********************************|includes|*****************************************/
 #include "inc/jogo_da_velha.h"
 
-
 char board[3][3];  
 int sel_row = 1, sel_col = 1;  
 int blink_state = 0; 
