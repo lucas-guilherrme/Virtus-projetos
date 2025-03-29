@@ -45,7 +45,6 @@ void teste_button_evento( ButtonEvent evento);
 int main(){
 
     stdio_init_all();               // Initializes the UART for printing
-
     /*************************************|Inicializar o botoes|***************************
     init_button("BUTTON_B"); 
     init_button("BUTTON_A"); 
