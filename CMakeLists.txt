@@ -42,6 +42,7 @@ add_executable(libraries
     Aplication/jogo_da_velha.c
 
     Libs/button/src/button.c
+    Libs/button/src/_button.c
     Libs/display_oled/src/ssd_1306_font.c
     Libs/display_oled/src/ssd_1306.c
     Libs/joystick/src/joystick.c

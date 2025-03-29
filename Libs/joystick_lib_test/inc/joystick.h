@@ -15,11 +15,14 @@
 #define JOYSTICK_H
 
 #include <stdint.h>
-
+#include "pico/stdlib.h"
+#include "hardware/adc.h"
 
 /*******************************************| Definicoes | *********************/
 #define ADC_PIN_X   26
 #define ADC_PIN_Y   27
+
+#define BUTTON_JOYSTICK 22
 
 #define ADC_CHANEL_1 1
 #define ADC_CHANEL_0 0
@@ -30,6 +33,7 @@
 #define DEADZONE_THRESHOLD 100 // Dead zone
 #define LOWPASS_ALPHA 0.2      // Low-pass filter coefficient
 
+/*********************************| struct |************************************/
 /**
  * @brief Holds the raw and filtered joystick data and buffers.
  */
@@ -43,6 +47,9 @@ typedef struct {
     int16_t prev_x;                        ///< Previous filtered X-axis value
     int16_t prev_y;                        ///< Previous filtered Y-axis value
 } JoystickState;
+
+
+/****************************|function|****************************************/
 
 /**
  * @brief Initializes the joystick module.
@@ -92,5 +99,7 @@ int16_t Joystick_LowPassFilter(int16_t new_sample, int16_t prev_value);
  * @return Median value.
  */
 int16_t Joystick_MedianFilter(int16_t *buffer, uint8_t size);
+
+bool _joystick_read_button(void);
 
 #endif // JOYSTICK_H

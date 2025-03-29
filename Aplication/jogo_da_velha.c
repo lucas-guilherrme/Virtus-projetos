@@ -6,12 +6,24 @@ char board[3][3];
 int sel_row = 1, sel_col = 1;  
 int blink_state = 0; 
 
+/*Ler o botao A*/
 bool read_button_A(void) {
-    return (!gpio_get(BUTTON_PIN_A));
+    if(!gpio_get(BUTTON_PIN_A)){
+        sleep_ms(DEBAUCING);
+        if(!gpio_get(BUTTON_PIN_A))
+            return true;
+    }
+    return false;
 }
 
+/*Ler o botao B*/
 bool read_button_B(void) {
-    return (!gpio_get(BUTTON_PIN_B));
+    if(!gpio_get(BUTTON_PIN_B)){
+        sleep_ms(DEBAUCING);
+        if(!gpio_get(BUTTON_PIN_B))
+            return true;
+    }
+    return false;
 }
 
 int get_joystick_direction(void) {
@@ -204,9 +216,9 @@ void wait_for_start(void) {
     }
 }
 
+/*
 
-
-/******************************* MAIN *************************************/
+/******************************* MAIN *************************************
 int main(void) {
     int mode, current_player = 0;  // 0 para 'X', 1 para 'O'
     int joy;
@@ -280,3 +292,4 @@ int main(void) {
     
     return 0;
 }
+*/

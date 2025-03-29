@@ -201,3 +201,37 @@ Tratamento de Erros:
 Implementar mecanismos de tratamento de erros para lidar com falhas no ADC ou leituras inválidas, garantindo maior robustez.
 Conclusão
 O código apresentado é funcional e bem estruturado para o propósito de leitura e processamento de dados de um joystick. No entanto, melhorias como abstração de hardware, otimização de algoritmos e modularização podem aumentar sua portabilidade, desempenho e facilidade de manutenção. Além disso, a inclusão de testes unitários e documentação mais detalhada tornará a biblioteca mais confiável e fácil de usar em diferentes projetos.
+
+
+---
+# Biblioteca do joystick
+
+__Pontos positivos__
+
+        * Criação de uma estrutura 
+        * Aplicação de filtros para a leituras dos valores do adc
+        * Consegue usar a biblioteca de forma isolada só com a dependencia das libs do ADC
+        * 
+
+__Pontos negativos__
+
+        * Não criação do botão do joystick
+        * 
+
+# Biblioteca da matrix de leds
+
+__Pontos positivos__
+
+        * Criação da estrutura 
+        * Lógica simples para fazer a formação das corres dos leds
+        * 
+
+__Pontos negativos__
+
+        * Foi colocado valores númericos dentro do código
+
+# Biblioteca do Botão
+
+__Pontos positivos__
+__Pontos negativos__
+

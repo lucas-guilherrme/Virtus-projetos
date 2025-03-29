@@ -16,18 +16,24 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 
-#include "inc/examples.h"
 
+#include "inc/examples.h"
+/*
 #include "examples.h"
 #include "../Libs/button/inc/button.h"
 #include "../Libs/led_matrix/inc/ledMatrix.h"
-#include "inc/aplication.h"
+#include "inc/aplication.h"*/
+
 #include "../Libs/joystick_lib_test/inc/joystick.h"
+
+//#include "../inc/jogo_da_velha.h"
+
+#include "../Libs/button/inc/_button.h"
 
 /**************************************| Variaveis globais |************************/
 
 /**************************************| prototipo das funcoes |*********************/
-void teste_button_evento( ButtonEvent evento);
+//void teste_button_evento( ButtonEvent evento);
 
 
 /**
@@ -93,6 +99,41 @@ int main(){
 }
 */
 
+int main(){
+
+    stdio_init_all();
+    button_init();
+
+    JoystickState joystick = {0};         // Declare a joystick state variable
+    Joystick_Init(&joystick);            // Initialize the joystick
+
+    int contador = 0;
+
+    for(;;){
+        if(_read_button_A()){
+            contador += 1;
+            printf("Contador A: %d\n", contador);
+        }
+
+        if(_read_button_B()){
+            contador -= 1;
+            printf("Contador B: %d\n", contador);
+        }
+        sleep_ms(100);
+
+        Joystick_Read(&joystick);
+        printf("Cordenada x %d\nCordenada y %d\n", joystick.x_raw, joystick.y_raw);
+        sleep_ms(500);
+
+        if(_joystick_read_button()){
+            printf("Botao pressionado\n");
+        }
+        sleep_ms(100);
+    }
+
+    return 0;
+}
+/*
 void teste_button_evento(ButtonEvent evento){
     int conter = 0;
     if(evento == SINGLE_CLICK){
@@ -107,3 +148,4 @@ void teste_button_evento(ButtonEvent evento){
         
     }
 }
+    */

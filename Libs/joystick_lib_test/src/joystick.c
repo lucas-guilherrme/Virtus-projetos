@@ -12,6 +12,10 @@ void Joystick_Init(JoystickState *js) {
     js->x_filtered = js->x_raw; // Initialize filtered values
     js->y_filtered = js->y_raw; // Initialize filtered values
 
+    gpio_init(BUTTON_JOYSTICK);
+    gpio_set_dir(BUTTON_JOYSTICK, GPIO_IN); 
+    gpio_pull_up(BUTTON_JOYSTICK);  
+
 }
 
 /* Reads the raw joystick values from ADC. */
@@ -96,4 +100,12 @@ void Joystick_ApplyFilters(JoystickState *js) {
     // Update previous values
     js->prev_x = js->x_filtered;
     js->prev_y = js->y_filtered;
+}
+
+bool _joystick_read_button(void){
+    if(!gpio_get(BUTTON_JOYSTICK)){
+        return true;
+    }else{
+        return false;
+    }
 }

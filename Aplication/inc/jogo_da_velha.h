@@ -44,6 +44,8 @@
 #define JOY_LEFT   3
 #define JOY_RIGHT  4
 #define JOY_SELECT 5
+
+#define DEBAUCING 50
 /********************************|fuctions|*****************************************/
 
 bool read_button_A(void);  
