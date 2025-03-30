@@ -42,6 +42,22 @@
         "pico.h": "c",
         "gpio.h": "c",
         "stdlib.h": "c",
-        "examples.h": "c"
+        "examples.h": "c",
+        "ledmatrix.h": "c",
+        "_button.h": "c",
+        "ssd_1306_use.h": "c",
+        "ssd_1306.h": "c",
+        "pio.h": "c",
+        "ws2818b.pio.h": "c",
+        "clocks.h": "c",
+        "math.h": "c",
+        "config.h": "c",
+        "ssd_1306_font.h": "c",
+        "stdio.h": "c",
+        "stddef.h": "c",
+        "ssd_1306_conf.h": "c",
+        "jogo_da_velha.h": "c",
+        "i2c.h": "c",
+        "time.h": "c"
     }
 }

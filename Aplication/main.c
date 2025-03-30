@@ -1,151 +1,93 @@
-/**
- * @file main.c
- * @brief Main application file for Raspberry Pi Pico project integrating joystick, LED matrix, and push buttons.
- *
- * This file demonstrates the initialization and usage of various peripherals, including:
- * - Joystick for input
- * - LED matrix for visual output
- * - Push buttons with interrupt handling
- * 
- * The code includes examples for testing individual components and integrating them together.
- * Uncomment specific test functions to run the desired examples.
- *
- * @note Ensure the correct GPIO pins are connected for the LED RGB and buttons as defined in the code.
- */
 
-#include <stdio.h>
-#include "pico/stdlib.h"
+#include "inc/ssd_1306.h"
+#include "inc/ssd_1306_conf.h"
+#include "inc/ssd_1306_font.h"
+#include "inc/_button.h"
+#include "inc/joystick.h"
+#include "inc/jogo_da_velha.h"
 
+#define MENU_OPTIONS 3
 
-#include "inc/examples.h"
-/*
-#include "examples.h"
-#include "../Libs/button/inc/button.h"
-#include "../Libs/led_matrix/inc/ledMatrix.h"
-#include "inc/aplication.h"*/
+const char *game_names[MENU_OPTIONS] = {
+    "Jogo da Velha",
+    "Snake",
+    "Sequencia Correta"
+};
 
-#include "../Libs/joystick_lib_test/inc/joystick.h"
-
-//#include "../inc/jogo_da_velha.h"
-
-#include "../Libs/button/inc/_button.h"
-
-/**************************************| Variaveis globais |************************/
-
-/**************************************| prototipo das funcoes |*********************/
-//void teste_button_evento( ButtonEvent evento);
-
-
-/**
- * @brief Main function of the application.
- *
- * Initializes the UART, joystick, LED matrix, and push buttons. Provides examples for:
- * - Testing push button interrupts
- * - Testing joystick functionality (complete, dead zone, low-pass filter)
- * - Testing LED matrix animations (wipe, moving square, spiral)
- * - Integrating joystick control with LED matrix
- *
- * @return int Returns 0 on successful execution.
- */
-/*
-int main(){
-
-    stdio_init_all();               // Initializes the UART for printing
-    /*************************************|Inicializar o botoes|***************************
-    init_button("BUTTON_B"); 
-    init_button("BUTTON_A"); 
-
-    init_button_IT(BUTTON_A);
-    init_button_IT(BUTTON_B);
-
-    /*************************************|Inicializar a matrix|***************************
-    LedMatrix_Init(&ws2812_config); // Initializes the LED Matrix
-
-    /************************************| Inicializacao do joystick|*********************
-
-    JoystickState joystick = {0};         // Declare a joystick state variable
-    Joystick_Init(&joystick);            // Initialize the joystick
-
-    while (1) {
-
-    // --------------------- PushButton's Example --------------------- //
-
-        //process_button_state(teste_button_evento);
-        //sleep_ms(100);
-
-    // ---------------------- Joystick's Example ---------------------- //
-        
-        //Test_joystick_Complete(&joystick);
-        //Test_joystick_DeadZone(&joystick);
-        //Test_joystick_LowpassFilter(&joystick);
-
-    // --------------------- LedMatrix's Example ---------------------- //
-
-        //Test_LedMatrix_Wipe();
-        //Test_LedMatrix_MovingSquare();
-        //Test_LedMatrix_Spiral();
-
-    // ---------------- Tests integrating all the libs ---------------- //
-        //Test_joystick_LedMatrixControl(&joystick);
-        //Test_joystick_LedMatrixColorToggle(&joystick);
-
-    // ----------------------------- LOG ------------------------------ //
-
-        //log_values(&joystick);
-
-    }
-
-    return 0;
-}
-*/
+int show_menu(JoystickState *js, const char *game_names[]);
 
 int main(){
 
     stdio_init_all();
+    ssd_1306_init();
     button_init();
 
-    JoystickState joystick = {0};         // Declare a joystick state variable
-    Joystick_Init(&joystick);            // Initialize the joystick
+    JoystickState js = {0};
+    Joystick_Init(&js);
 
-    int contador = 0;
+    ssd_1306_fill(black);
+    ssd_1306_draw_circle(40, 40, 20, white);
+    ssd_1306_up_date_screen();
 
-    for(;;){
-        if(_read_button_A()){
-            contador += 1;
-            printf("Contador A: %d\n", contador);
-        }
+    int game = show_menu(&js, game_names);
 
-        if(_read_button_B()){
-            contador -= 1;
-            printf("Contador B: %d\n", contador);
-        }
-        sleep_ms(100);
-
-        Joystick_Read(&joystick);
-        printf("Cordenada x %d\nCordenada y %d\n", joystick.x_raw, joystick.y_raw);
-        sleep_ms(500);
-
-        if(_joystick_read_button()){
-            printf("Botao pressionado\n");
-        }
-        sleep_ms(100);
+    switch(game) {
+        case 0:{
+            play_tic_tac_toe();
+        }break;
+        case 2:{
+        }break;
     }
-
+    
     return 0;
 }
-/*
-void teste_button_evento(ButtonEvent evento){
-    int conter = 0;
-    if(evento == SINGLE_CLICK){
-        if(gpio_get(BUTTON_A) == 0){
-            conter = conter + 1;;
-            printf("Contador: %d\n", conter);
+
+int show_menu(JoystickState *js, const char *game_names[]) {
+    int selected_option = 0;
+    bool button_pressed = false;
+    while (1) {
+        // Limpa a tela
+        ssd_1306_fill(black);
+
+        // Exibe as opções do menu
+        for (int i = 0; i < MENU_OPTIONS; i++) {
+            if (i == selected_option) {
+                // Destaca a opção selecionada
+                ssd_1306_write_string("> ", Font_6x8, white);
+            } else {
+                ssd_1306_write_string("  ", Font_6x8, white);
+            }
+            ssd_1306_write_string(game_names[i], Font_6x8, white);
+            ssd_1306_set_cursor(0, (i + 1) * 10); // Move para a próxima linha
         }
-        else if(gpio_get(BUTTON_B) == 0){
-            conter -=1;
-            printf("Contador: %d\n", conter);
+
+        // Atualiza a tela
+        ssd_1306_up_date_screen();
+
+        // Lê os valores do joystick
+        Joystick_Read(js);
+        Joystick_ApplyFilters(js);
+
+        // Navega pelo menu
+        if (js->y_filtered < (AVERAGE_VALUE - DEADZONE_THRESHOLD)) {
+            // Move para cima
+            if (selected_option > 0) {
+                selected_option--;
+                sleep_ms(200); // Delay para evitar múltiplos movimentos rápidos
+            }
+        } else if (js->y_filtered > (AVERAGE_VALUE + DEADZONE_THRESHOLD)) {
+            // Move para baixo
+            if (selected_option < MENU_OPTIONS - 1) {
+                selected_option++;
+                sleep_ms(200); // Delay para evitar múltiplos movimentos rápidos
+            }
         }
-        
+
+        // Verifica se o botão foi pressionado
+        button_pressed = _joystick_read_button();
+        if (button_pressed) {
+            // Retorna a opção selecionada
+            return selected_option;
+        }
     }
 }
-    */

@@ -36,18 +36,22 @@ pico_sdk_init()
 # Add executable. Default name is the project name, version 0.1
 
 add_executable(libraries 
-
-    Aplication/aplication.c
     Aplication/main.c
-    Aplication/jogo_da_velha.c
 
-    Libs/button/src/button.c
-    Libs/button/src/_button.c
-    Libs/display_oled/src/ssd_1306_font.c
-    Libs/display_oled/src/ssd_1306.c
-    Libs/joystick/src/joystick.c
-    Libs/joystick_lib_test/src/joystick.c
-    Libs/led_matrix/src/ledMatrix.c
+    Aplication/src/button/button.c
+    Aplication/src/button/_button.c
+
+    Aplication/src/buzzer/buzzer.c
+    Aplication/src/games/jogo_da_velha.c
+    Aplication/src/games/sequencia.c
+
+    Aplication/src/oled/ssd_1306_font.c
+    Aplication/src/oled/ssd_1306.c
+    Aplication/src/oled/ssd_1306_use.c
+
+    Aplication/src/joystick/joystick.c
+
+    Aplication/src/led_matrix/ledMatrix.c
 
 )
 
@@ -73,16 +77,6 @@ target_link_libraries(libraries
 # Add the standard include files to the build
 target_include_directories(
     libraries PRIVATE inc
-
-    Aplication/inc
-
-    Libs/button/inc
-    Libs/display_oled/inc
-    Libs/joystick/inc
-    Libs/joystick_lib_test/inc
-    Libs/led_matrix/inc
-
-
 )
 
 pico_generate_pio_header(${PROJECT_NAME} ${CMAKE_CURRENT_LIST_DIR}/ws2818b.pio)
