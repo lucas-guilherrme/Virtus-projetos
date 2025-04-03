@@ -25,7 +25,7 @@
 
 Este projeto foi desenvolvido para o **Raspberry Pi Pico W** e contém bibliotecas escritas em **C** utilizando o SDK oficial da Raspberry Pi. O objetivo principal é fornecer uma interface fácil de usar para componentes como **joystick**, **matriz de LEDs RGB** e **botões**, permitindo a criação de aplicações interativas e dinâmicas. O ambiente de desenvolvimento utilizado foi o **Visual Studio Code**, com suporte à extensão do Raspberry Pi Pico.
 
-As bibliotecas foram projetadas para serem modulares e reutilizáveis, com exemplos práticos que demonstram como integrá-las em projetos personalizados. Além disso, todo o processo de modelagem e verificação foi realizado utilizando a placa **BitDogLab**, garantindo confiabilidade e compatibilidade com o hardware.
+As bibliotecas foram projetadas para serem modulares e reutilizáveis, com exemplos práticos que demonstram como integrá-las em projetos personalizados. Além disso, todo o processo dge modelagem e verificação foi realizado utilizando a placa **BitDogLab**, garantindo confiabilidade e compatibilidade com o hardware.
 
 O projeto inclui funcionalidades como:
 - **Leitura de Joystick**: Aplicação de filtros (média móvel, passa-baixa, zona morta) para leituras analógicas estáveis.
