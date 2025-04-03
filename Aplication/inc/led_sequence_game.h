@@ -15,4 +15,6 @@
 void led_matrix_moving(int x, int y, led_intensity_t red, led_intensity_t green, led_intensity_t blue);
 void led_matrix_nuber(int numero);
 
+void play_led_sequence_game(JoystickState *js);
+
 #endif ///APLICATION_H

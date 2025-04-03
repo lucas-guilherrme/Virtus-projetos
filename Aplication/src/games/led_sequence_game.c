@@ -1,5 +1,5 @@
 /***********************************| includes| ***************************/
-#include "../Aplication/inc/sequencia.h"
+#include "../Aplication/inc/led_sequence_game.h"
 
 /**
  * @brief Moves a colored rectangle across an LED matrix.
@@ -193,4 +193,111 @@ void led_matrix_nuber(int numero){
     } 
 }
 
+void play_led_sequence_game(JoystickState *js) {
+    static int sequence[20][2]; // Stores the sequence of LEDs (x, y)
+    static int sequence_length = 1; // Current sequence length
+    static int cursor_x = 2, cursor_y = 2; // Cursor position (starts at center)
+    int current_step = 0; // Current step in the sequence
 
+    // Initialize the first LED in the sequence
+    sequence[0][0] = rand() % 5; // Random x
+    sequence[0][1] = rand() % 5; // Random y
+
+    while (true) {
+        // Display instructions on the OLED
+        ssd_1306_fill(black);
+        ssd_1306_set_cursor(0, 0);
+        ssd_1306_write_string("Joystick: Move", Font_6x8, white);
+        ssd_1306_set_cursor(0, 10);
+        ssd_1306_write_string("A: Select LED", Font_6x8, white);
+        ssd_1306_set_cursor(0, 20);
+        ssd_1306_write_string("B: Clear LED", Font_6x8, white);
+        ssd_1306_up_date_screen();
+
+        // Read joystick state
+        Joystick_Read(js);
+        js->x_filtered = Joystick_LowPassFilter(js->x_raw, js->x_filtered);
+        js->y_filtered = Joystick_LowPassFilter(js->y_raw, js->y_filtered);
+
+        // Move cursor based on joystick input
+        if (js->x_filtered > ADC_UPPER_THRESHOLD_X && cursor_x < 4) {
+            cursor_x++;
+        } else if (js->x_filtered < ADC_LOWER_THRESHOLD_X && cursor_x > 0) {
+            cursor_x--;
+        }
+        if (js->y_filtered > ADC_UPPER_THRESHOLD_Y && cursor_y < 4) {
+            cursor_y++;
+        } else if (js->y_filtered < ADC_LOWER_THRESHOLD_Y && cursor_y > 0) {
+            cursor_y--;
+        }
+
+        // Check if button A is pressed to select an LED
+        if (_read_button_A()) {
+            if (cursor_x == sequence[current_step][0] && cursor_y == sequence[current_step][1]) {
+                // Correct LED: Change its color to green
+                LedMatrix_SetPixel(cursor_x, cursor_y, LED_OFF, LED_STRONG, LED_OFF);
+                LedMatrix_Update();
+                sleep_ms(200); // Small delay for feedback
+
+                current_step++;
+                if (current_step == sequence_length) {
+                    // Player completed the current sequence
+                    sequence_length++;
+                    if (sequence_length > 20) {
+                        // Player wins
+                        ssd_1306_fill(black);
+                        ssd_1306_set_cursor(0, 20);
+                        ssd_1306_write_string("You Win!", Font_6x8, white);
+                        ssd_1306_up_date_screen();
+                        sleep_ms(2000);
+                        return;
+                    }
+                    // Add new LEDs to the sequence
+                    for (int i = current_step; i < sequence_length; i++) {
+                        sequence[i][0] = rand() % 5;
+                        sequence[i][1] = rand() % 5;
+                    }
+                    current_step = 0;
+                }
+            } else {
+                // Incorrect LED: Keep it red and end the game
+                LedMatrix_SetPixel(cursor_x, cursor_y, LED_STRONG, LED_OFF, LED_OFF);
+                LedMatrix_Update();
+                sleep_ms(200); // Small delay for feedback
+
+                // Display "Game Over" on the OLED
+                ssd_1306_fill(black);
+                ssd_1306_set_cursor(0, 20);
+                ssd_1306_write_string("Game Over!", Font_6x8, white);
+                ssd_1306_up_date_screen();
+                sleep_ms(2000);
+
+                // Clear the LED matrix
+                LedMatrix_Clear();
+                LedMatrix_Update();
+                return;
+            }
+        }
+
+        // Check if button B is pressed to clear the LED matrix
+        if (_read_button_B()) {
+            LedMatrix_Clear();
+            LedMatrix_Update();
+        }
+
+        // Clear the LED matrix
+        LedMatrix_Clear();
+
+        // Display the sequence
+        for (int i = 0; i < sequence_length; i++) {
+            LedMatrix_SetPixel(sequence[i][0], sequence[i][1], LED_STRONG, LED_OFF, LED_OFF); // Red for sequence LEDs
+        }
+
+        // Highlight the cursor position
+        LedMatrix_SetPixel(cursor_x, cursor_y, LED_WEAK, LED_WEAK, LED_WEAK); // Weak white for cursor
+
+        // Update the LED matrix
+        LedMatrix_Update();
+        sleep_ms(100);
+    }
+}

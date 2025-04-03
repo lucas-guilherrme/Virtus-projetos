@@ -42,8 +42,10 @@ add_executable(libraries
     Aplication/src/button/_button.c
 
     Aplication/src/buzzer/buzzer.c
+
     Aplication/src/games/jogo_da_velha.c
-    Aplication/src/games/sequencia.c
+    Aplication/src/games/led_sequence_game.c
+    Aplication/src/games/snake_game.c
 
     Aplication/src/oled/ssd_1306_font.c
     Aplication/src/oled/ssd_1306.c

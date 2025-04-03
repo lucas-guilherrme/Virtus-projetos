@@ -8,6 +8,7 @@
 #include <string.h>
 #include <time.h>
 #include <ctype.h>
+#include <stdbool.h>
 
 #include "hardware/pio.h"
 #include "ws2818b.pio.h"

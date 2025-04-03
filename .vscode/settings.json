@@ -58,6 +58,7 @@
         "ssd_1306_conf.h": "c",
         "jogo_da_velha.h": "c",
         "i2c.h": "c",
-        "time.h": "c"
+        "time.h": "c",
+        "snake_game.h": "c"
     }
 }
