@@ -293,11 +293,12 @@ _Melhoria_: Definir macros/definições para a dimensão da matriz e índices m�
 
 # 👥 Notas
 
-__Matrix de led:__ 9,5
-__Joystick:__ 9,0
-__Botões:__ 7,5
-
-_Média:_8.67
+| Bibliotecas | Notas | Observação
+| ------------|------------------------------------|
+| Matrix de led | 9,5 | Fácil uso e independência |
+| Joystick | 9,00 |Fácil uso |
+| Botões   | 7,50 | Dificil uso e pouca documentação |
+| **Média**    | 8.67 | No geral foi uma boa implementação |
 
 ---
 
