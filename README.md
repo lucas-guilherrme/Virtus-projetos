@@ -19,6 +19,7 @@
   - [Joystick](#-joystick)
   - [Botões](#-botões)
   - [Matriz de LEDs](#-matriz-de-leds)
+- [Notas](#-notas)
 - [Contribuintes](#-contribuintes)
 
 # 📌 Introdução
@@ -289,6 +290,14 @@ _Sugestão:_
 _Uso de Constantes Fixas:_ Constantes como 5 (dimensão da matriz) e 4 (índice máximo) estão espalhadas pelo código, dificultando alterações futuras.
 
 _Melhoria_: Definir macros/definições para a dimensão da matriz e índices máximos.
+
+# 👥 Notas
+
+__Matrix de led:__ 9,5
+__Joystick:__ 9,0
+__Botões:__ 7,5
+
+_Média:_8.67
 
 ---
 
